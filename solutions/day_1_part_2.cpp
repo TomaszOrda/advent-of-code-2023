@@ -1,4 +1,4 @@
-#include "day_1.hpp"
+#include "all_solutions.hpp"
 #include <string>
 #include <optional>
 
