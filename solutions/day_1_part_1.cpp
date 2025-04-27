@@ -1,3 +1,4 @@
+#include "day_1.hpp"
 #include <string>
 #include <optional>
 
