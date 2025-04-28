@@ -4,7 +4,10 @@ I have not attended AoC in 2023. I have now (2025) decided to practice and relea
 
 Solutions for each day and task are in separate files.
 
-To run the solution build designated solution file and `runner.cpp`. To run with custom input, change `.txt` file in data folder. Non-test data inputs should be placed in the same folder, without the `_test` part. `.exe` files can be also supplied with datapath to the input `.txt` file.
+To run the solution:
+1. Build the designated solution file along with `../runner.cpp`. 
+2. By default, solutions use test inputs. To use puzzle input modify the `TEST` variable. The puzzle input file should be named the same as the test input, but without `_test` suffix.
+3. Alternatively, you can run the solution with a custom input file by providing the file path as a parameter to the compiled executable.
 
 Data for each task can be accessed through the site.
 

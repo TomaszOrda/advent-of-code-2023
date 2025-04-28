@@ -39,7 +39,7 @@ std::string input_loader(std::string_view file_path){
 
 std::string input_loader(int day, int part, bool test){
     
-    std::string file_path = std::format("../data/day_{}{}.txt",day, test ? "_test" : "");
+    std::string file_path = std::format("day_{}{}.txt",day, test ? "_test" : "");
 
     return input_loader(file_path);
 }
