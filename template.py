@@ -19,21 +19,23 @@ for day in range(1, 26):
             continue
 
         with open(solution_path, 'w', encoding="UTF-8") as solution:
-            solution.writelines([
-                '#include "../runner.hpp"\n'
-                "#include <string>\n",
-                "#include <optional>\n\n",
-                f'#define DAY {day}\n'
-                f'#define PART {part}\n'
-                '#define TEST true\n\n'
-                "std::optional<std::string> solve(std::string_view input){\n",
-                "    return std::nullopt;\n",
-                "}\n\n",
-                'int main(int argc, char *argv[]) {\n'
-                '    if (argc > 1){\n'
-                '        return runner(solve, input_loader(argv[1]));\n'
-                '    }else{\n'
-                '        return runner(solve, input_loader(DAY, PART, TEST));\n'
-                '    }\n'
-                '}\n'
-            ])
+            solution.write(f"""#include "../runner.hpp"
+#include <string>
+#include <optional>
+
+#define DAY {day}
+#define PART {part}
+#define TEST true
+
+std::optional<std::string> solve(std::string_view input){{
+    return std::nullopt;
+}}
+
+int main(int argc, char *argv[]) {{
+    if (argc > 1){{
+        return runner(solve, input_loader(argv[1]));
+    }}else{{
+        return runner(solve, input_loader(DAY, PART, TEST));
+    }}
+}}
+""")
