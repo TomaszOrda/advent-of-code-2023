@@ -4,7 +4,7 @@ I have not attended AoC in 2023. I have now (2025) decided to practice and relea
 
 Solutions for each day and task are in separate files.
 
-To run the solution build designated solution file and `runner.cpp`. To run with custom input, change `.txt` file in data folder. Non-test data inputs should be placed in the same folder, without the `_test` part.
+To run the solution build designated solution file and `runner.cpp`. To run with custom input, change `.txt` file in data folder. Non-test data inputs should be placed in the same folder, without the `_test` part. `.exe` files can be also supplied with datapath to the input `.txt` file.
 
 Data for each task can be accessed through the site.
 

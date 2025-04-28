@@ -22,9 +22,9 @@ int runner(SolveFunctionType solve, std::string_view input) {
     }
 }
 
-std::string input_loader(int day, int part, bool test){
+std::string input_loader(std::string_view file_path){
     
-    std::filesystem::path data_path {std::format("../data/day_{}{}.txt",day, test ? "_test" : "")};
+    std::filesystem::path data_path {file_path};
 
     std::ifstream input_stream {data_path};
     if (!input_stream) {
@@ -35,4 +35,11 @@ std::string input_loader(int day, int part, bool test){
     input_buffer << input_stream.rdbuf();
 
     return input_buffer.str();
+}
+
+std::string input_loader(int day, int part, bool test){
+    
+    std::string file_path = std::format("../data/day_{}{}.txt",day, test ? "_test" : "");
+
+    return input_loader(file_path);
 }

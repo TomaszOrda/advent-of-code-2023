@@ -22,7 +22,11 @@ for day in range(1, 26):
                 "std::optional<std::string> solve(std::string_view input){\n",
                 "    return std::nullopt;\n",
                 "}\n\n",
-                'int main() {\n'
-                '    return runner(solve, input_loader(DAY, PART, TEST));\n'
+                'int main(int argc, char *argv[]) {\n'
+                '    if (argc > 1){\n'
+                '        return runner(solve, input_loader(argv[1]));\n'
+                '    }else{\n'
+                '        return runner(solve, input_loader(DAY, PART, TEST));\n'
+                '    }\n'
                 '}\n'
             ])
