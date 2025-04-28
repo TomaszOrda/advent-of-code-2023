@@ -1,9 +1,15 @@
-#include "all_solutions.hpp"
+#include "runner.hpp"
 #include <string>
 #include <optional>
 
-namespace day_1_part_1{
-    std::optional<std::string> solve(std::string_view input){
-        return std::nullopt;
-    }
+#define DAY 1
+#define PART 1
+#define TEST true
+
+std::optional<std::string> solve(std::string_view input){
+    return std::nullopt;
+}
+
+int main() {
+    return runner(solve, input_loader(DAY, PART, TEST));
 }
