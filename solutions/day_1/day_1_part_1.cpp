@@ -1,19 +1,16 @@
-#include "../runner.hpp"
+#include "../runner_oo.hpp"
 #include <string>
 #include <optional>
-
-#define DAY 1
-#define PART 1
-#define TEST true
 
 std::optional<std::string> solve(std::string_view input){
     return std::nullopt;
 }
 
 int main(int argc, char *argv[]) {
+    Solution solution = Solution(1, 1, solve);
     if (argc > 1){
-        return runner(solve, input_loader(argv[1]));
+        return solution.test_run();
     }else{
-        return runner(solve, input_loader(DAY, PART, TEST));
+        return solution.run();
     }
 }

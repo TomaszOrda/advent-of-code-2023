@@ -1,4 +1,4 @@
-#include "runner.hpp"
+#include "runner_oo.hpp"
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -9,7 +9,26 @@
 
 using SolveFunctionType = std::optional<std::string>(*)(std::string_view);
 
-int runner(SolveFunctionType solve, std::string_view input) {
+Solution::Solution(int day, int part, SolveFunctionType solve)
+    : m_day { day }
+    , m_part { part }
+    , m_solve {solve}
+{
+}
+    
+int Solution::test_run(){
+    return this->runner(m_solve, this->input_loader(m_day, m_part, true));
+}
+int Solution::test_run(std::string_view input){
+    return this->runner(m_solve, input);
+}
+int Solution::run(){
+    return this->runner(m_solve, this->input_loader(m_day, m_part, false));
+}
+int Solution::run(std::string_view file_path){
+    return this->runner(m_solve, this->input_loader(file_path));
+}
+int Solution::runner(SolveFunctionType solve, std::string_view input) {
 
     std::optional<std::string> output = solve(input);
     
@@ -22,7 +41,7 @@ int runner(SolveFunctionType solve, std::string_view input) {
     }
 }
 
-std::string input_loader(std::string_view file_path){
+std::string Solution::input_loader(std::string_view file_path){
     
     std::filesystem::path data_path {file_path};
 
@@ -37,9 +56,10 @@ std::string input_loader(std::string_view file_path){
     return input_buffer.str();
 }
 
-std::string input_loader(int day, int part, bool test){
+std::string Solution::input_loader(int day, int part, bool test){
     
     std::string file_path = std::format("day_{}{}.txt",day, test ? "_test" : "");
 
     return input_loader(file_path);
 }
+
