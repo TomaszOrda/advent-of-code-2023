@@ -20,6 +20,7 @@ for day in range(1, 26):
 
         with open(solution_path, 'w', encoding="UTF-8") as solution:
             solution.write(f"""#include "../runner_oo.hpp"
+#include "../utils.hpp"
 #include <string>
 #include <optional>
 
