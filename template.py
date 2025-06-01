@@ -28,7 +28,7 @@ std::optional<std::string> solve(std::string_view input){{
     return std::nullopt;
 }}
 
-int main(int argc, char *argv[]) {{
+int main(int argc, [[maybe_unused]] char *argv[]) {{
     Solution solution = Solution({day}, {part}, solve);
     if (argc > 1){{
         return solution.test_run();

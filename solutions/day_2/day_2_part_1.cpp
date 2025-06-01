@@ -29,9 +29,10 @@ private:
 
 class Game{
 public:
-    int id;
+    int id{};
+    
     Game(std::string_view game_record){
-        int header_pos = game_record.find(':');
+        size_t header_pos = game_record.find(':');
         id = svtoi(game_record.substr(5, header_pos-5));
         for (const std::string_view& subset_record : split(game_record.substr(header_pos), ';')){
             subsets.push_back(Subset(subset_record));
@@ -63,7 +64,7 @@ std::optional<std::string> solve(std::string_view input){
     return std::to_string(sum_of_possible_games_ids);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, [[maybe_unused]] char *argv[]) {
     Solution solution = Solution(2, 1, solve);
     if (argc > 1){
         return solution.test_run();

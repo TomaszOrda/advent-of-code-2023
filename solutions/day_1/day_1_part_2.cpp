@@ -15,7 +15,7 @@ int starts_with_digit(std::string_view s, bool reverse=false){
             {"zero", "one", "two", 
             "three", "four", "five", 
             "six", "seven", "eight", "nine"};
-        for (size_t i{0}; i < 10; i++){
+        for (int i{0}; i < 10; i++){
             std::string_view pattern = digits[i];
             if (s.length() >= pattern.length() && pattern_matcher(s, pattern)){
                 return i;
@@ -46,7 +46,7 @@ std::optional<std::string> solve(std::string_view input){
     return std::to_string(sum_of_calibraction_values);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, [[maybe_unused]] char *argv[]) {
     Solution solution = Solution(1, 2, solve);
     if (argc > 1){
         return solution.run("day_1_test_2.txt");

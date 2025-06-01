@@ -25,9 +25,9 @@ public:
     int run();
     int run(std::string_view file_path);
 private:
-    SolveFunctionType m_solve;
     int m_day;
     int m_part;
+    SolveFunctionType m_solve;
     int runner(SolveFunctionType solve, std::string_view input);
     std::string input_loader(std::string_view file_path);
     std::string input_loader(int day, int part, bool test);

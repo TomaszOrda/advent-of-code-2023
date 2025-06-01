@@ -56,7 +56,7 @@ std::string Solution::input_loader(std::string_view file_path){
     return input_buffer.str();
 }
 
-std::string Solution::input_loader(int day, int part, bool test){
+std::string Solution::input_loader(int day, [[maybe_unused]] int part, bool test){
     
     std::string file_path = std::format("day_{}{}.txt",day, test ? "_test" : "");
 

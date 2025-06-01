@@ -33,7 +33,7 @@ std::optional<std::string> solve(std::string_view input){
     return std::to_string(sum_of_calibraction_values);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, [[maybe_unused]] char *argv[]) {
     Solution solution = Solution(1, 1, solve);
     if (argc > 1){
         return solution.test_run();
