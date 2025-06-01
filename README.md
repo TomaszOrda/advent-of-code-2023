@@ -5,9 +5,9 @@ I have not attended AoC in 2023. I have now (2025) decided to practice and relea
 Solutions for each day and task are in separate files.
 
 To run the solution:
-1. Build the designated solution file along with `../runner.cpp` and `../utils.cpp`. 
-2. By default, solutions use test inputs. To use puzzle input modify the `TEST` variable. The puzzle input file should be named the same as the test input, but without `_test` suffix.
-3. Alternatively, you can run the solution with a custom input file by providing the file path as a parameter to the compiled executable.
+1. Build the designated solution file along with `../runner.cpp` and `../utils.cpp`. (Consult the .vscode folder in case of troubles.)
+2. Default build and run task uses `test` parameter. It uses the puzzle input, when running executable without any parameter. The puzzle input file should be named the same as the test input, but without `_test` suffix.
+3. Alternatively, you can run the solution with a custom test input file changing the main function accordingly (`test_run()` -> `run(path)`).
 
 Data for each task can be accessed through the site.
 
