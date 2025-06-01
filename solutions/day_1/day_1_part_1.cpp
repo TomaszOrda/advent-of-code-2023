@@ -14,7 +14,7 @@ int digit_to_int(char c){
 
 std::optional<std::string> solve(std::string_view input){
     int sum_of_calibraction_values = 0;
-    for (std::string_view line : split_lines(input)){
+    for (const std::string_view& line : split_lines(input)){
         char first_digit {};
         char last_digit {};
 
