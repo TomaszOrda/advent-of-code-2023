@@ -39,3 +39,8 @@ int svtoi(std::string_view s){
     std::from_chars(s.data(), s.data() + s.size(), value);
     return value;
 }
+long long int svtoll(std::string_view s){
+    long long int  value{};
+    std::from_chars(s.data(), s.data() + s.size(), value);
+    return value;
+}
