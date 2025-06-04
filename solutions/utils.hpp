@@ -2,9 +2,9 @@
 #include <vector>
 #include <optional>
 
-std::vector<std::string_view> split_lines(std::string_view text);
-std::vector<std::string_view> split(std::string_view text, char delimiter);
-std::vector<std::string_view> split(std::string_view text, std::string_view delimiter);
+std::vector<std::string_view> split_lines(std::string_view text, bool only_nonempty=false);
+std::vector<std::string_view> split(std::string_view text, char delimiter, bool only_nonempty=false);
+std::vector<std::string_view> split(std::string_view text, std::string_view delimiter, bool only_nonempty=false);
 int svtoi(std::string_view s);
 long long int svtoll(std::string_view s);
 
