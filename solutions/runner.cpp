@@ -6,6 +6,7 @@
 #include <format>
 #include <sstream>
 #include <filesystem>
+#include <chrono>
 
 using SolveFunctionType = std::optional<std::string>(*)(std::string_view);
 
@@ -29,10 +30,13 @@ int Solution::run(std::string_view file_path){
     return this->runner(m_solve, this->input_loader(file_path));
 }
 int Solution::runner(SolveFunctionType solve, std::string_view input) {
-
+    auto time_start = std::chrono::high_resolution_clock::now();
     std::optional<std::string> output = solve(input);
+    auto time_end = std::chrono::high_resolution_clock::now();
     
     if (output){
+        auto duration_ms = std::chrono::duration<double, std::milli>(time_end-time_start);
+        std::cout<< "Program finished in: " <<duration_ms <<"\n\n";
         std::cout << output.value() << std::flush;
         return 0;
     }else{
