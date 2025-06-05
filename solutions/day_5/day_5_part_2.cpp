@@ -131,12 +131,6 @@ public:
         }
     }
     long long int minimal_location(){
-        // if (!maps.contains("seed-to-location")){
-        //     maps.insert(std::pair<std::string_view, RangesMap>(
-        //         "seed-to-location", 
-        //         
-        //     ));
-        // }
         long long int minimal_location = LONG_LONG_MAX;
         for (const auto& range : (
                 seeds_map>>
