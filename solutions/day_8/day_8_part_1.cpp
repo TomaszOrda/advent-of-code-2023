@@ -3,6 +3,7 @@
 #include <string>
 #include <optional>
 #include <unordered_map>
+#include <ranges>
 
 #define START "AAA"
 #define END "ZZZ"
@@ -55,12 +56,8 @@ public:
     Network(std::string_view pack_of_maps) {
         auto lines = split_lines(pack_of_maps);
         direction_feed = DirectionFeed(lines[0]);
-        lines.erase(lines.begin());
-        lines.erase(lines.begin());
-        for (const auto& line : lines) {
-            Node node(line);
+        for (const auto& node : lines | std::views::drop(2) | std::views::transform([](auto x){return Node(x);})) 
             nodes.emplace(node.name, node);
-        }
     }
     int distance_to_end(){
         int distance{};
