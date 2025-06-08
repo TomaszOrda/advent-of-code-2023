@@ -18,6 +18,12 @@ public:
         , data {std::vector<T>(width*height)}
     {
     }
+    Grid(int width, int height, T value)
+        : width {width}
+        , height {height}
+        , data {std::vector<T>(static_cast<size_t>(width*height), value)}
+    {
+    }
     Grid(std::string_view) requires(std::is_same_v<T, char>);
     std::optional<T> at(int x, int y) const;
     void replace(int x, int y, T value);
