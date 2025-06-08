@@ -1,6 +1,7 @@
 #include <string_view>
 #include <vector>
 #include <optional>
+#include <algorithm>
 
 std::vector<std::string_view> split_lines(std::string_view text, bool only_nonempty=false);
 std::vector<std::string_view> split(std::string_view text, char delimiter, bool only_nonempty=false);
@@ -27,6 +28,12 @@ public:
         return width;
     }
 private:
+    std::pair<int, int> flat_to_x_y(long long int flat) const{
+        return {static_cast<int>(flat)%width, static_cast<int>(flat)/width};
+    }
+    size_t x_y_to_flat(int x, int y) const{
+        return static_cast<size_t>(x + width*y);
+    }
     int width{};
     int height{};
     std::vector<T> data{};
@@ -35,14 +42,14 @@ private:
 template<typename T>
 inline std::optional<T> Grid<T>::at(int x, int y) const {
     if (0<=y && y<height && 0<=y && y<height){
-        return data[static_cast<size_t>(y*width + x)];
+        return data[x_y_to_flat(x,y)];
     }else{
         return std::nullopt;
     }
 }
 template<typename T>
 inline void Grid<T>::replace(int x, int y, T value){
-    data[y*width + x] = value;
+    data[x_y_to_flat(x, y)] = value;
 }
 template<>
 inline Grid<char>::Grid(std::string_view text){
