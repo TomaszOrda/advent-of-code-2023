@@ -33,6 +33,10 @@ public:
     int get_height() const{
         return width;
     }
+    std::pair<int, int> find(T value) const{
+        long long int flat_coordinate {std::find(data.begin(), data.end(), value) - data.begin()};
+        return flat_to_x_y(flat_coordinate);
+    }
 private:
     std::pair<int, int> flat_to_x_y(long long int flat) const{
         return {static_cast<int>(flat)%width, static_cast<int>(flat)/width};
