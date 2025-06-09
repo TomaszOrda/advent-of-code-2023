@@ -28,10 +28,10 @@ public:
     std::optional<T> at(int x, int y) const;
     void replace(int x, int y, T value);
     int get_width() const{
-        return height;
+        return width;
     }
     int get_height() const{
-        return width;
+        return height;
     }
     std::pair<int, int> find(T value) const{
         long long int flat_coordinate {std::find(data.begin(), data.end(), value) - data.begin()};
