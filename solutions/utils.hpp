@@ -51,7 +51,7 @@ private:
 
 template<typename T>
 inline std::optional<T> Grid<T>::at(int x, int y) const {
-    if (0<=y && y<height && 0<=y && y<height){
+    if (0<=y && y<height && 0<=x && x<width){
         return data[x_y_to_flat(x,y)];
     }else{
         return std::nullopt;
