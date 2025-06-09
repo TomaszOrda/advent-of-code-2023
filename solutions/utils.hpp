@@ -2,6 +2,7 @@
 #include <vector>
 #include <optional>
 #include <algorithm>
+#include <iostream>
 
 std::vector<std::string_view> split_lines(std::string_view text, bool only_nonempty=false);
 std::vector<std::string_view> split(std::string_view text, char delimiter, bool only_nonempty=false);
@@ -36,6 +37,13 @@ public:
     std::pair<int, int> find(T value) const{
         long long int flat_coordinate {std::find(data.begin(), data.end(), value) - data.begin()};
         return flat_to_x_y(flat_coordinate);
+    }
+    void print() requires(std::is_same_v<T, char>){
+        for (int y{0}; y<get_height(); y++){
+            for (int x{0}; x<get_width(); x++)
+                std::cout<<at(x,y).value();
+            std::cout<<'\n';
+        }
     }
 private:
     std::pair<int, int> flat_to_x_y(long long int flat) const{
