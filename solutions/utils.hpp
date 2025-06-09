@@ -10,6 +10,39 @@ std::vector<std::string_view> split(std::string_view text, std::string_view deli
 int svtoi(std::string_view s);
 long long int svtoll(std::string_view s);
 
+class Coord{
+public:
+    int first;
+    int second;
+    Coord(): first{0}, second{0} {};
+    Coord(std::pair<int, int> pair) : first{pair.first}, second{pair.second} {};
+    Coord(int x, int y) : first{x}, second{y}{}
+    Coord operator+(const Coord& other) const{
+        return Coord(first + other.first, second + other.second);
+    }
+    Coord operator-(const Coord& other) const{
+        return Coord(first - other.first, second - other.second);
+    }
+    Coord operator-() const{
+        return Coord(-first, -second);
+    }
+    bool operator==(const Coord& other) const{
+        return first == other.first && second == other.second;
+    }
+    Coord rotate_left() const{
+        return Coord(second, -first);
+    }
+    Coord rotate_right() const{
+        return rotate_left().rotate_left().rotate_left();
+    }
+    int manhattan_distance() const{
+        return abs(first) + abs(second);
+    }
+    operator std::pair<int, int>() const {
+        return {first, second};
+    }
+};
+
 template<typename T>
 class Grid{
 public:
@@ -27,16 +60,18 @@ public:
     }
     Grid(std::string_view) requires(std::is_same_v<T, char>);
     std::optional<T> at(int x, int y) const;
+    std::optional<T> at(Coord c) const;
     void replace(int x, int y, T value);
+    void replace(Coord c, T value);
     int get_width() const{
         return width;
     }
     int get_height() const{
         return height;
     }
-    std::pair<int, int> find(T value) const{
+    Coord find(T value) const{
         long long int flat_coordinate {std::find(data.begin(), data.end(), value) - data.begin()};
-        return flat_to_x_y(flat_coordinate);
+        return flat_to_coord(flat_coordinate);
     }
     void print() requires(std::is_same_v<T, char>){
         for (int y{0}; y<get_height(); y++){
@@ -46,7 +81,7 @@ public:
         }
     }
 private:
-    std::pair<int, int> flat_to_x_y(long long int flat) const{
+    Coord flat_to_coord(long long int flat) const{
         return {static_cast<int>(flat)%width, static_cast<int>(flat)/width};
     }
     size_t x_y_to_flat(int x, int y) const{
@@ -66,8 +101,16 @@ inline std::optional<T> Grid<T>::at(int x, int y) const {
     }
 }
 template<typename T>
+std::optional<T> Grid<T>::at(Coord c) const{
+    return at(c.first, c.second);
+}
+template<typename T>
 inline void Grid<T>::replace(int x, int y, T value){
     data[x_y_to_flat(x, y)] = value;
+}
+template<typename T>
+inline void Grid<T>::replace(Coord c, T value){
+    replace(c.first, c.second, value);
 }
 template<>
 inline Grid<char>::Grid(std::string_view text){
