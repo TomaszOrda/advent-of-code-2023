@@ -33,8 +33,12 @@ public:
 private:
     long long int number_of_possible_arrangements_aux(std::string_view springs_slice, std::span<int> groups_slice){
         unsigned long long int key{pair_keys_to_key(springs_slice.length(), groups_slice.size())};
+
         if (cache.contains(key))
             return cache.at(key);
+
+        if (static_cast<int>(springs_slice.length()) < std::accumulate(groups_slice.begin(), groups_slice.end(), 0) +  static_cast<int>(groups_slice.size()) - 1)
+            return 0;
 
         if (groups_slice.empty()){
             if (springs_slice.contains('#'))
