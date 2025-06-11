@@ -5,12 +5,16 @@
 #include <vector>
 #include <ranges>
 #include <numeric>
-#include <map>
+#include <unordered_map>
+#include <cassert>
 
 class DamagedSprings{
+    using key_type = uint64_t;
+    key_type max_key_part_value = UINT32_MAX;
+    int key_shift = 32;
     std::string springs{};
     std::vector<int> groups{};
-    std::map<std::pair<int, int>, long long int> cache{};
+    std::unordered_map<key_type, long long int> cache{};
 public:
     DamagedSprings(std::string_view record)
     {
@@ -28,7 +32,7 @@ public:
     }
 private:
     long long int number_of_possible_arrangements_aux(std::string_view springs_slice, std::span<int> groups_slice){
-        std::pair<int, int> key{springs_slice.length(), groups_slice.size()};
+        unsigned long long int key{pair_keys_to_key(springs_slice.length(), groups_slice.size())};
         if (cache.contains(key))
             return cache.at(key);
 
@@ -64,6 +68,13 @@ private:
         long long int result = result_skip + result_fit;
         cache.emplace(key, result);
         return cache.at(key);
+    }
+    key_type pair_keys_to_key(size_t a, size_t b){
+        //Consider creating a custom class implementing a hash function.
+        //The hash function should return a xor of two hashes.
+        //This would result in fewer collisions.
+        assert(a < max_key_part_value && b < max_key_part_value && "Sub-keys too large");
+        return (a << key_shift) ^ b;
     }
 };
 
