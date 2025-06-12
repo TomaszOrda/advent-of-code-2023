@@ -14,9 +14,9 @@ class Coord{
 public:
     int first;
     int second;
-    Coord(): first{0}, second{0} {};
-    Coord(std::pair<int, int> pair) : first{pair.first}, second{pair.second} {};
-    Coord(int x, int y) : first{x}, second{y}{}
+    constexpr Coord(): first{0}, second{0} {};
+    constexpr Coord(std::pair<int, int> pair) : first{pair.first}, second{pair.second} {};
+    constexpr Coord(int x, int y) : first{x}, second{y}{}
     Coord operator+(const Coord& other) const{
         return Coord(first + other.first, second + other.second);
     }
@@ -41,7 +41,15 @@ public:
     operator std::pair<int, int>() const {
         return {first, second};
     }
+    static const Coord North;
+    static const Coord South;
+    static const Coord East;
+    static const Coord West;
 };
+constexpr Coord Coord::North = Coord(0, -1);
+constexpr Coord Coord::South = Coord(0, 1);
+constexpr Coord Coord::East = Coord(1, 0);
+constexpr Coord Coord::West = Coord(-1, 0);
 
 template<typename T>
 class Grid{
