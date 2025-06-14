@@ -9,6 +9,8 @@ std::vector<std::string_view> split(std::string_view text, char delimiter, bool 
 std::vector<std::string_view> split(std::string_view text, std::string_view delimiter, bool only_nonempty=false);
 int svtoi(std::string_view s);
 long long int svtoll(std::string_view s);
+int is_digit(char c);
+int digit_to_int(char c);
 
 class Coord{
 public:
