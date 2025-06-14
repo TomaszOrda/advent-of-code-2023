@@ -3,6 +3,7 @@
 #include <optional>
 #include <algorithm>
 #include <iostream>
+#include <functional>
 
 std::vector<std::string_view> split_lines(std::string_view text, bool only_nonempty=false);
 std::vector<std::string_view> split(std::string_view text, char delimiter, bool only_nonempty=false);
@@ -73,6 +74,8 @@ public:
     std::optional<T> at(Coord c) const;
     void replace(int x, int y, T value);
     void replace(Coord c, T value);
+    void update(int x, int y, std::function<void(T&)> func);
+    void update(Coord c, std::function<void(T&)> func);
     int get_width() const{
         return width;
     }
@@ -121,6 +124,14 @@ inline void Grid<T>::replace(int x, int y, T value){
 template<typename T>
 inline void Grid<T>::replace(Coord c, T value){
     replace(c.first, c.second, value);
+}
+template<typename T>
+void Grid<T>::update(int x, int y, std::function<void(T&)> func){
+    func(data[x_y_to_flat(x,y)]);
+}
+template<typename T>
+void Grid<T>::update(Coord c, std::function<void(T&)> func){
+    update(c.first, c.second, func);
 }
 template<>
 inline Grid<char>::Grid(std::string_view text){
