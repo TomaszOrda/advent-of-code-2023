@@ -52,3 +52,34 @@ int is_digit(char c){
 int digit_to_int(char c){
     return c - '0';
 }
+
+
+
+Coord Coord::operator+(const Coord& other) const{
+    return Coord(first + other.first, second + other.second);
+}
+Coord Coord::operator-(const Coord& other) const{
+    return Coord(first - other.first, second - other.second);
+}
+Coord Coord::operator-() const{
+    return Coord(-first, -second);
+}
+bool Coord::operator==(const Coord& other) const{
+    return first == other.first && second == other.second;
+}
+Coord Coord::rotate_left() const{
+    return Coord(second, -first);
+}
+Coord Coord::rotate_right() const{
+    return rotate_left().rotate_left().rotate_left();
+}
+int Coord::manhattan_distance() const{
+    return abs(first) + abs(second);
+}
+Coord::operator std::pair<int, int>() const {
+    return {first, second};
+}
+constexpr Coord Coord::North = Coord(0, -1);
+constexpr Coord Coord::South = Coord(0, 1);
+constexpr Coord Coord::East = Coord(1, 0);
+constexpr Coord Coord::West = Coord(-1, 0);

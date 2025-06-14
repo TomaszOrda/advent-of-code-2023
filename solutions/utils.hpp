@@ -20,39 +20,19 @@ public:
     constexpr Coord(): first{0}, second{0} {};
     constexpr Coord(std::pair<int, int> pair) : first{pair.first}, second{pair.second} {};
     constexpr Coord(int x, int y) : first{x}, second{y}{}
-    Coord operator+(const Coord& other) const{
-        return Coord(first + other.first, second + other.second);
-    }
-    Coord operator-(const Coord& other) const{
-        return Coord(first - other.first, second - other.second);
-    }
-    Coord operator-() const{
-        return Coord(-first, -second);
-    }
-    bool operator==(const Coord& other) const{
-        return first == other.first && second == other.second;
-    }
-    Coord rotate_left() const{
-        return Coord(second, -first);
-    }
-    Coord rotate_right() const{
-        return rotate_left().rotate_left().rotate_left();
-    }
-    int manhattan_distance() const{
-        return abs(first) + abs(second);
-    }
-    operator std::pair<int, int>() const {
-        return {first, second};
-    }
+    Coord operator+(const Coord& other) const;
+    Coord operator-(const Coord& other) const;
+    Coord operator-() const;
+    bool operator==(const Coord& other) const;
+    Coord rotate_left() const;
+    Coord rotate_right() const;
+    int manhattan_distance() const;
+    operator std::pair<int, int>() const;
     static const Coord North;
     static const Coord South;
     static const Coord East;
     static const Coord West;
 };
-constexpr Coord Coord::North = Coord(0, -1);
-constexpr Coord Coord::South = Coord(0, 1);
-constexpr Coord Coord::East = Coord(1, 0);
-constexpr Coord Coord::West = Coord(-1, 0);
 
 template<typename T>
 class Grid{
