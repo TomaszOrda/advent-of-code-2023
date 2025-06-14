@@ -5,6 +5,7 @@
 #include <deque>
 #include <algorithm>
 
+//Solution could be improved using part 2 optimizations.
 
 class CrucibleState{
 public:

@@ -2,7 +2,7 @@
 #include "../utils.hpp"
 #include <string>
 #include <optional>
-#include <deque>
+#include <queue>
 #include <algorithm>
 
 #define MIN_STRAIGHT_ROUTE 4
@@ -29,7 +29,11 @@ public:
     CrucibleState turn_left(){
         return {pos, dir.rotate_left(), heat_loss};
     }
+    float expected_cost(int width, int height) const{
+        return float(width - 1 + height - 1)/float(pos.manhattan_distance())*static_cast<float>(heat_loss) + static_cast<float>(heat_loss);
+    }
 };
+
 
 
 class TrafficMap{
@@ -48,6 +52,12 @@ public:
         Grid<int> min_heat_loss_horizontal{traffic.get_width(), traffic.get_height(), INT_MAX};
         Grid<int> min_heat_loss_vertical{traffic.get_width(), traffic.get_height(), INT_MAX};
 
+        std::priority_queue<CrucibleState, std::vector<CrucibleState>,  std::function<bool(const CrucibleState&, const CrucibleState&)>> 
+            to_visit(
+                [this](const CrucibleState& a, const CrucibleState& b){
+                    return  a.expected_cost(traffic.get_width(), traffic.get_height()) > b.expected_cost(traffic.get_width(), traffic.get_height());
+                });
+
         int max_heat_loss = 0;
         Coord naive_route{0,0};
         while(naive_route != end){
@@ -58,14 +68,12 @@ public:
             }
             max_heat_loss += traffic.at(naive_route).value();
         }
-
-        std::deque<CrucibleState> to_visit{};
-        to_visit.push_back(start_1);
-        to_visit.push_back(start_2);
+        to_visit.emplace(start_1);
+        to_visit.emplace(start_2);
         while(!to_visit.empty()){
-            CrucibleState state = to_visit.front();
+            CrucibleState state = to_visit.top();
             Coord pos = state.pos;
-            to_visit.pop_front();
+            to_visit.pop();
 
             Grid<int>& min_heat_loss_grid = state.dir.first == 0 ? min_heat_loss_vertical : min_heat_loss_horizontal;
 
@@ -88,8 +96,8 @@ public:
                 state_right.go_straight(traffic);
                 state_left.go_straight(traffic);
     
-                to_visit.push_back(state_right);
-                to_visit.push_back(state_left);
+                to_visit.emplace(state_right);
+                to_visit.emplace(state_left);
             }
 
         }
