@@ -10,31 +10,22 @@ class CrucibleState{
 public:
     Coord pos{};
     Coord dir{};
-    int traveled_straight{};
     int heat_loss{};
     CrucibleState(){}
-    CrucibleState(Coord pos, Coord dir, int traveled_straight, int heat_loss)
+    CrucibleState(Coord pos, Coord dir, int heat_loss)
         : pos{pos}
         , dir{dir}
-        , traveled_straight{traveled_straight}
         , heat_loss{heat_loss}
     {}
-    bool can_go_straight(){
-        return traveled_straight != 3;
-    }
-    CrucibleState go_straight(){
-        return {pos+dir, dir, traveled_straight+1, heat_loss};
+    void go_straight(const Grid<char>& traffic){
+        pos = pos+dir;
+        heat_loss = traffic.at(pos) ? heat_loss + digit_to_int(traffic.at(pos).value()) : INT_MAX;
     }
     CrucibleState turn_right(){
-        Coord new_dir = dir.rotate_right();
-        return {pos+new_dir, new_dir, 1, heat_loss};
+        return {pos, dir.rotate_right(), heat_loss};
     }
     CrucibleState turn_left(){
-        Coord new_dir = dir.rotate_left();
-        return {pos+new_dir, new_dir, 1, heat_loss};
-    }
-    bool operator<=(const CrucibleState& other) const{
-        return (heat_loss <= other.heat_loss && dir == other.dir && traveled_straight <= other.traveled_straight) || heat_loss < other.heat_loss - 18;
+        return {pos, dir.rotate_left(), heat_loss};
     }
 };
 
@@ -47,43 +38,59 @@ class TrafficMap{
 public:
     TrafficMap(std::string_view text) 
     : traffic{text}
-    , start_1{CrucibleState({0,0}, Coord::East,  0, -digit_to_int(traffic.at(0,0).value()))}
-    , start_2{CrucibleState({0,0}, Coord::South, 0, -digit_to_int(traffic.at(0,0).value()))}
+    , start_1{CrucibleState({0,0}, Coord::East,  0)}
+    , start_2{CrucibleState({0,0}, Coord::South, 0)}
     , end{traffic.get_width()-1, traffic.get_height()-1}
     {}
     int min_heat_loss(){
-        Grid<std::vector<CrucibleState>> min_heat_loss_states{traffic.get_width(), traffic.get_height(), {}};
+        Grid<int> min_heat_loss_horizontal{traffic.get_width(), traffic.get_height(), INT_MAX};
+        Grid<int> min_heat_loss_vertical{traffic.get_width(), traffic.get_height(), INT_MAX};
         std::deque<CrucibleState> to_visit{};
+        to_visit.push_back(start_1);
+        to_visit.push_back(start_2);
+
+        int max_heat_loss = 0;
+        Coord naive_route{0,0};
+        while(naive_route != end){
+            if (traffic.get_width() - naive_route.first > traffic.get_height() - naive_route.second){
+                naive_route = naive_route + Coord::East;
+            }else{
+                naive_route = naive_route + Coord::South;
+            }
+            max_heat_loss += traffic.at(naive_route).value();
+        }
+
+        to_visit = {};
         to_visit.push_back(start_1);
         to_visit.push_back(start_2);
         while(!to_visit.empty()){
             CrucibleState state = to_visit.front();
             Coord pos = state.pos;
             to_visit.pop_front();
-            if (!min_heat_loss_states.at(pos))
-                continue;
-            
-            state.heat_loss += digit_to_int(traffic.at(state.pos).value());
-            auto states = min_heat_loss_states.at(pos).value();
 
-            if (std::any_of(states.begin(), states.end(), [state](const auto& s){return s<=state;}))
+            Grid<int>& min_heat_loss_grid = state.dir.first == 0 ? min_heat_loss_vertical : min_heat_loss_horizontal;
+
+            if (!traffic.at(pos))
                 continue;
-            
-            min_heat_loss_states.update(pos, [state](std::vector<CrucibleState>& x){
-                x.erase(std::remove_if(x.begin(), x.end(), [state](auto s){return state<=s;}), x.end());
-                x.push_back(state);});
-            to_visit.push_back(state.turn_right());
-            to_visit.push_back(state.turn_left());
-            if (state.can_go_straight())
-                to_visit.push_back(state.go_straight());
+            if (min_heat_loss_grid.at(pos).value() <= state.heat_loss)
+                continue;
+            if (state.heat_loss + (end - state.pos).manhattan_distance() > max_heat_loss)
+                continue;
+
+            min_heat_loss_grid.replace(pos, state.heat_loss);
+
+            auto state_right = state.turn_right();
+            auto state_left = state.turn_left();
+            for (int straight{}; straight<3; straight++){
+                state_right.go_straight(traffic);
+                state_left.go_straight(traffic);
+    
+                to_visit.push_back(state_right);
+                to_visit.push_back(state_left);
+            }
 
         }
-        int min = INT_MAX;
-        auto end_states = min_heat_loss_states.at(end).value();
-        for (const auto& state : end_states)
-            min = std::min(min, state.heat_loss);
-
-        return min;
+        return std::min(min_heat_loss_vertical.at(end).value(), min_heat_loss_horizontal.at(end).value());
     }
 };
 
