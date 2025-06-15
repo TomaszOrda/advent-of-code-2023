@@ -40,7 +40,7 @@ public:
     Grid(int width, int height)
         : width {width}
         , height {height}
-        , data {std::vector<T>(width*height)}
+        , data {std::vector<T>(static_cast<size_t>(width*height))}
     {
     }
     Grid(int width, int height, T value)
