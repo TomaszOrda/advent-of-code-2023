@@ -12,6 +12,8 @@ int svtoi(std::string_view s);
 long long int svtoll(std::string_view s);
 int is_digit(char c);
 int digit_to_int(char c);
+int hex_digit_to_int(char c);
+int hex_to_int(std::string_view hex);
 
 class Coord{
 public:
@@ -21,6 +23,7 @@ public:
     constexpr Coord(std::pair<int, int> pair) : first{pair.first}, second{pair.second} {};
     constexpr Coord(int x, int y) : first{x}, second{y}{}
     Coord operator+(const Coord& other) const;
+    Coord operator*(const int& scalar) const;
     Coord operator-(const Coord& other) const;
     Coord operator-() const;
     bool operator==(const Coord& other) const;
@@ -33,7 +36,7 @@ public:
     static const Coord East;
     static const Coord West;
 };
-
+Coord operator*(int scalar, const Coord& obj);
 template<typename T>
 class Grid{
 public:

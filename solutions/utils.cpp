@@ -52,11 +52,32 @@ int is_digit(char c){
 int digit_to_int(char c){
     return c - '0';
 }
-
+int hex_digit_to_int(char c){
+    if (is_digit(c)){
+        return digit_to_int(c);
+    }
+    else if (c <='F'){
+        return 10 + c - 'A';
+    }else{
+        return 10 + c - 'a';
+    }
+    throw std::runtime_error("Unknown hexadecimal digit");
+}
+int hex_to_int(std::string_view hex){
+    int result = 0;
+    for (size_t i{}; i<hex.length(); i++){
+        result *= 16;
+        result += hex_digit_to_int(hex[i]);
+    }
+    return result;
+}
 
 
 Coord Coord::operator+(const Coord& other) const{
     return Coord(first + other.first, second + other.second);
+}
+Coord Coord::operator*(const int& scalar) const{
+    return {first * scalar, second * scalar};
 }
 Coord Coord::operator-(const Coord& other) const{
     return Coord(first - other.first, second - other.second);
@@ -83,3 +104,6 @@ constexpr Coord Coord::North = Coord(0, -1);
 constexpr Coord Coord::South = Coord(0, 1);
 constexpr Coord Coord::East = Coord(1, 0);
 constexpr Coord Coord::West = Coord(-1, 0);
+Coord operator*(int scalar, const Coord& obj){
+    return {obj.first * scalar, obj.second * scalar};
+}
