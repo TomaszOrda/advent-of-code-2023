@@ -11,13 +11,13 @@ To run the solution:
 
 Data for each task can be accessed through the site.
 
-38/50⭐
+39/50⭐
 
 |            | 日 | 月 | 火 | 水 | 木 | 金 | 土 |
 |:-----------|-------|-------|-------|-------|-------|-------|-------|
 | **Week 1** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|
 | **Week 2** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|
-| **Week 3** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|&nbsp;|&nbsp;|
+| **Week 3** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;|&nbsp;|
 | **Week 4** |&nbsp;|&nbsp;|&nbsp;|&nbsp;|&nbsp;&nbsp;|||
 
 <!-- An estimated rundown of the time invested in each day puzzle (includes coding and coding-adjacent activities). -->
