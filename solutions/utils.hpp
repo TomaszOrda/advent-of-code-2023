@@ -37,6 +37,15 @@ public:
     static const Coord West;
 };
 Coord operator*(int scalar, const Coord& obj);
+
+template<>
+struct std::hash<Coord>{
+    std::size_t operator()(const Coord& coord) const{
+        //hash conflicts when second is exactly UINT16_MAX bigger than first
+        return std::hash<int>{}(coord.first)^std::hash<int>{}(coord.second + UINT16_MAX);
+    }
+};
+
 template<typename T>
 class Grid{
 public:
