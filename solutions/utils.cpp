@@ -97,9 +97,6 @@ Coord Coord::rotate_right() const{
 int Coord::manhattan_distance() const{
     return abs(first) + abs(second);
 }
-Coord::operator std::pair<int, int>() const {
-    return {first, second};
-}
 constexpr Coord Coord::North = Coord(0, -1);
 constexpr Coord Coord::South = Coord(0, 1);
 constexpr Coord Coord::East = Coord(1, 0);

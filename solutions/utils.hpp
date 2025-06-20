@@ -30,7 +30,9 @@ public:
     Coord rotate_left() const;
     Coord rotate_right() const;
     int manhattan_distance() const;
-    operator std::pair<int, int>() const;
+    operator std::pair<int, int>() const{
+        return {first, second};
+    };
     static const Coord North;
     static const Coord South;
     static const Coord East;
