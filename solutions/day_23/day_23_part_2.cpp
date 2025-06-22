@@ -42,6 +42,7 @@ class Maze{
     Grid<char> map;
     std::unordered_set<Coord> intersections{};
     std::unordered_map<Coord, std::unordered_map<Coord, int>> distance_between_intersections{};
+    std::unordered_map<Coord, size_t> intersection_to_index{};
     Coord start{};
     Coord end{};
     //For the ease of calculations, we will consider starting at second position
@@ -60,6 +61,11 @@ public:
                     intersections.emplace(Coord(x,y));
                     distance_between_intersections.emplace(Coord(x,y), std::unordered_map<Coord, int>());
                 }
+
+        int intersection_id =0;
+        for (const auto& intersection : intersections)
+            intersection_to_index.emplace(intersection, intersection_id++);
+
         for (int x{}; x<map.get_width(); x++)
             for (int y{}; y<map.get_height(); y++)
                 if (SLOPES.contains(map.at(x,y).value()))
@@ -68,7 +74,7 @@ public:
         calculate_intersections_distances();
     }
     int longest_hike_length(){
-        std::unordered_set<Coord> visited{};
+        uint64_t visited{};
         return longest_hike_length_recursive(start, visited);
     }
     
@@ -94,18 +100,19 @@ private:
         }
         return result + enter_exit_distance;
     }
-    int longest_hike_length_recursive(Coord starting_pos, std::unordered_set<Coord>& visited_intersections){
+    int longest_hike_length_recursive(Coord starting_pos, uint64_t visited_intersections){
         if (starting_pos == end){
             return enter_exit_distance;
         }
-        visited_intersections.emplace(starting_pos);
+        
+        size_t starting_pos_id = intersection_to_index[starting_pos];
+        visited_intersections |= (1ULL << starting_pos_id);
         int result = 0;
         for (const auto& intersection : distance_between_intersections[starting_pos]){
-            if (!visited_intersections.contains(intersection.first)){
+            if (!(visited_intersections & (1ULL << intersection_to_index[intersection.first]))){
                 result = std::max(result, intersection.second + longest_hike_length_recursive(intersection.first, visited_intersections));                
             }
         }
-        visited_intersections.erase(starting_pos);
         
         return result;
     }
