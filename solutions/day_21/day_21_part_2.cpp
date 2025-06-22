@@ -18,13 +18,18 @@
 #define DIRECTIONS {Coord::North, Coord::East, Coord::South, Coord::West}
 #define CORNERS {Coord(-1,-1), Coord(-1,1), Coord(1,-1), Coord(1,1)}
 
-//We assume square garden with clear alleys each direction.
-//That assumption doesnt hold for the standard test case.
-//Thus a new test case was developed.
+template <>
+struct std::hash<std::pair<Coord, Coord>> {
+    std::size_t operator()(const std::pair<Coord, Coord>& p) const {
+        return std::hash<Coord>()(p.first) ^ (std::hash<Coord>()(p.second) << 1);
+    }
+};
 
 class Garden{
     Grid<char> plots;
     Coord start{};
+    std::unordered_map<std::pair<Coord, Coord>, long long int> distance_from_to_cache{};
+    std::unordered_map<Coord, std::vector<long long int>> single_garden_plots_visited_cache{};
 public:
     Garden(std::string_view text) : plots{text}
     {
@@ -40,6 +45,7 @@ public:
     
 
     long long int plots_visited(long long int steps){
+        //assume square garden
         long long int total = 0;
 
         long long int furthest_garden_visited = (steps - plots.get_width()/2 - 1) / static_cast<long long int>(plots.get_width()) + static_cast<long long int>(2); //intial garden is 1
@@ -51,7 +57,7 @@ public:
         
         // INITIAL GARDEN
         total += single_garden_plots_visited(start, steps); 
-        
+
         // GARDENS FULLY VISITED
         if (full_gardens_even_parity + full_gardens_odd_parity > 0)
             total += single_garden_plots_visited(start, steps) * full_gardens_even_parity + single_garden_plots_visited(start, steps+1) * full_gardens_odd_parity; 
@@ -99,23 +105,29 @@ public:
     }
 private:
     long long int single_garden_plots_visited(Coord starting_pos, long long int steps){
+        if (single_garden_plots_visited_cache.contains(starting_pos)){
+            if (static_cast<size_t>(steps) >= single_garden_plots_visited_cache[starting_pos].size()){
+                size_t id = (single_garden_plots_visited_cache[starting_pos].size()-1) - ((static_cast<size_t>(steps) - (single_garden_plots_visited_cache[starting_pos].size()-1)) % 2 == 0 ? 0 : 1);
+                return single_garden_plots_visited_cache[starting_pos][id];
+            }else{
+                return single_garden_plots_visited_cache[starting_pos][static_cast<size_t>(steps)];
+            }
+        }
+        single_garden_plots_visited_cache.emplace(starting_pos, std::vector<long long int>());
         std::unordered_set<Coord> prev{};
         std::unordered_set<Coord> current{starting_pos};
+        long long int visited_prev = 0;
         long long int visited = 1;
-        if (steps % 2 == 1) {
+        for(long long int step{0}; ; step++){
+            single_garden_plots_visited_cache[starting_pos].push_back(visited);
             take_step(prev, current);
-            visited = static_cast<long long int>(current.size());
-        }
-
-        for(long long int step{steps % 2}; step<steps; step+=2){
-            take_step(prev, current);
-            take_step(prev, current);
-            visited += static_cast<long long int>(current.size());
             if (current.size() == 0)
-                return visited;
+                break;
             
+            std::swap(visited_prev, visited);
+            visited += static_cast<long long int>(current.size());
         }
-        return visited;
+        return single_garden_plots_visited(starting_pos, steps);
     }
 
     
@@ -148,6 +160,9 @@ private:
         );
     }
     long long int distance_from_to(Coord starting_pos, Coord destination){
+        if (distance_from_to_cache.contains({starting_pos, destination}))
+            return distance_from_to_cache[{starting_pos, destination}];
+        
         std::unordered_set<Coord> prev{};
         std::unordered_set<Coord> reached{starting_pos};
         long long int steps = 0;
@@ -155,6 +170,7 @@ private:
             steps++;
             take_step(prev, reached);
         }
+        distance_from_to_cache.emplace(std::make_pair(std::make_pair(starting_pos, destination), steps));
         return steps;
     }
 };
@@ -167,8 +183,6 @@ std::optional<std::string> solve(std::string_view input){
 int main(int argc, [[maybe_unused]] char *argv[]) {
     Solution solution = Solution(21, 2, solve);
     if (argc > 1){
-        //Due to some assumptions the standard test case results are a little bit off from what they should be.
-        //This test case is much simpler, and a little bit more helpful.
         solution.run("day_21_test_2.txt");
         long long int expected_result = (static_cast<long long int>(STEPS_SMALL_GARDEN) + static_cast<long long int>(1)) * (static_cast<long long int>(STEPS_SMALL_GARDEN) + static_cast<long long int>(1));
         std::cout<<" == "<<expected_result<<'\n';
