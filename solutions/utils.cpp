@@ -46,6 +46,11 @@ long long int svtoll(std::string_view s){
     std::from_chars(s.data(), s.data() + s.size(), value);
     return value;
 }
+double svtod(std::string_view s){
+    double value{};
+    std::from_chars(s.data(), s.data() + s.size(), value);
+    return value;
+}
 int is_digit(char c){
     return '0' <= c && c <= '9';
 }
