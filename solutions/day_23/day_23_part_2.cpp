@@ -4,6 +4,8 @@
 #include <optional>
 #include <unordered_set>
 #include <unordered_map>
+#include <set>
+#include <map>
 
 #define FOREST '#'
 #define PATH '.'
@@ -29,7 +31,7 @@ Coord slope_to_dir(char slope){
 
 struct MazeHikeState{
     Coord current_pos;
-    std::unordered_set<Coord> visited_intersections;
+    uint64_t visited_intersections;
     int current_length;
 };
 struct InterIntersectionHikeState{
@@ -40,9 +42,9 @@ struct InterIntersectionHikeState{
 
 class Maze{
     Grid<char> map;
-    std::unordered_set<Coord> intersections{};
-    std::unordered_map<Coord, std::unordered_map<Coord, int>> distance_between_intersections{};
-    std::unordered_map<Coord, size_t> intersection_to_index{};
+    std::set<Coord> intersections{};
+    std::map<Coord, std::unordered_map<Coord, int>> distance_between_intersections{};
+    std::map<Coord, size_t> intersection_to_index{};
     Coord start{};
     Coord end{};
     //For the ease of calculations, we will consider starting at second position
@@ -74,26 +76,26 @@ public:
         calculate_intersections_distances();
     }
     int longest_hike_length(){
-        uint64_t visited{};
-        return longest_hike_length_recursive(start, visited);
+        // return longest_hike_length_recursive(start, 0);
+        return longest_hike_length_iterative();
     }
     
 private:
     int longest_hike_length_iterative(){
         int result = 0;
         std::vector<MazeHikeState> stack;
-        stack.push_back(MazeHikeState{start, {start}, 0});
+        stack.push_back(MazeHikeState{start, 0, 0});
         while(!stack.empty()){
-            auto state = stack.back();
+            const auto state = stack.back();
             stack.pop_back();
             if (state.current_pos == end){
                 result = std::max(result, state.current_length);
                 continue;
             }
+            const size_t current_pos_id = intersection_to_index[state.current_pos];
+            const uint64_t new_visited = state.visited_intersections | (1ULL << current_pos_id);
             for (const auto& intersection : distance_between_intersections[state.current_pos]){
-                if (!state.visited_intersections.contains(intersection.first)){
-                    std::unordered_set<Coord> new_visited = state.visited_intersections;
-                    new_visited.emplace(intersection.first);
+                if (!(state.visited_intersections & (1ULL << intersection_to_index[intersection.first]))){
                     stack.push_back(MazeHikeState{intersection.first, new_visited, state.current_length + intersection.second});
                 }
             }
