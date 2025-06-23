@@ -88,6 +88,9 @@ Coord Coord::operator-() const{
 bool Coord::operator==(const Coord& other) const{
     return first == other.first && second == other.second;
 }
+bool Coord::operator<(const Coord& other) const{
+    return first == other.first ? second < other.second : first < other.first;
+};
 Coord Coord::rotate_left() const{
     return Coord(second, -first);
 }

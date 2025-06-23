@@ -27,6 +27,7 @@ public:
     Coord operator-(const Coord& other) const;
     Coord operator-() const;
     bool operator==(const Coord& other) const;
+    bool operator<(const Coord& other) const;
     Coord rotate_left() const;
     Coord rotate_right() const;
     int manhattan_distance() const;
