@@ -11,6 +11,8 @@ To run the solution:
 
 Data for each task can be accessed through the site.
 
+All solutions but two run under a second on my machine. Day 23 part 2 completes in under 4 seconds, and Day 25 uses a custom heuristic, which may or may not be fast enough. I opted for a heuristic because I did not want to copy code from Wikipedia — which in non-challenge scenario would be the sane thing to do.
+
 50/50⭐
 
 |            | 日 | 月 | 火 | 水 | 木 | 金 | 土 |
@@ -18,7 +20,7 @@ Data for each task can be accessed through the site.
 | **Week 1** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|
 | **Week 2** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|
 | **Week 3** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|
-| **Week 4** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;🌟|🎄&nbsp;🎄&nbsp;🎄|||
+| **Week 4** |⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;⭐|⭐&nbsp;🌟|🎄&nbsp;&nbsp;🎄|||
 
 <!-- An estimated rundown of the time invested in each day puzzle (includes coding and coding-adjacent activities). -->
 <!-- 
