@@ -7,6 +7,17 @@
 #include <cstdlib>
 #include <ctime>
 
+//I opted for a heuristic.
+//I wanted this solution to be mine, and copying code from wikipedia is not a good challenge.
+//Basic idea is: construct random spanning trees through dfs
+//Count how many times each edge was used
+//Every so often take three most frequent edges and try to cut
+//This heuristic does not have to work each time
+//Genrally in a graph that is well connected (aside the cut)
+//The cut edges would appear often
+//However one counterexample a tail of nodes, each with two edges connected
+//Those edges would be included in each of the spanning tree, basically breaking the heuristic
+//It is also slower that the clasic wikipedia or graph library solution 
 
 class Edge{
 public:
